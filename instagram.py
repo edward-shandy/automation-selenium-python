@@ -7,11 +7,15 @@ from selenium.webdriver.chrome.service import Service
 import time
 import pytest
 import pytest_selenium
+import unittest
 
+class PythonOrgSearch(unittest.TestCase):
+# s = Service('D:\\Documents\\Learning\\automation-selenium-python\\chrome-driver\\chromedriver.exe')
+    def setUp(self):
+        self.driver = webdriver.Chrome()
 
-s = Service('D:\\Documents\\Learning\\automation-selenium-python\\chrome-driver\\chromedriver.exe')
-driver = webdriver.Chrome(service=s)
-
-driver.get('https://sandbox.octav.prieds.com/')
+    def test_login_page (self):
+        driver = self.driver
+        driver.get('https://sandbox.octav.prieds.com/')
 
 
