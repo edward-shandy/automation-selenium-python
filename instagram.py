@@ -1,16 +1,18 @@
 from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.service import Service as ChromeService
 import unittest
 import time
+
 
 class PythonOrgSearch(unittest.TestCase):
 
     def setUp(self):
-        self.driver = webdriver.Chrome()
+        self.driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
         self.driver.maximize_window()
         self.username = "automation.edward"
         self.password = "User1234"
@@ -36,7 +38,7 @@ class PythonOrgSearch(unittest.TestCase):
 
     def tearDown(self):
         time.sleep(5)
-        # self.driver.quit()
+        self.driver.quit()
 
 if __name__ == "__main__":
     unittest.main()
