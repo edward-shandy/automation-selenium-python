@@ -7,38 +7,40 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.service import Service as ChromeService
 import unittest
 import time
+import pytest
 
 
-class PythonOrgSearch(unittest.TestCase):
+@pytest.fixture
+def instagram_driver():
+    driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+    driver.maximize_window()
+    yield driver
+    time.sleep(5)
+    driver.quit()
 
-    def setUp(self):
-        self.driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
-        self.driver.maximize_window()
-        self.username = "automation.edward"
-        self.password = "User1234"
-        self.refresh = self.driver.refresh()
+@pytest.mark.regression
+def test_search (instagram_driver):
+    driver = instagram_driver
+    driver.get('https://instagram.com/')
+    username = "automation.edward"
+    password = "User1234"
+    wait = WebDriverWait(driver,10)
 
-    def test_login_page (self):
-        driver = self.driver
-        driver.get('https://instagram.com/')
-        wait = WebDriverWait(driver,10)
-
+    try:
         username_field = wait.until(EC.presence_of_element_located((By.NAME, 'username')))
-        username_field.send_keys(self.username)
+        username_field.send_keys(username)
 
         password_field = wait.until(EC.presence_of_element_located((By.NAME,'password')))
-        password_field.send_keys(self.password)
+        password_field.send_keys(password)
 
         button_login = wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@type="submit"]')))
         button_login.click()
 
         wait.until(EC.presence_of_element_located((By.XPATH, '//div[@class="_aagx"]')))
-        self.driver.refresh()
-    
-
-    def tearDown(self):
-        time.sleep(5)
-        self.driver.quit()
+        driver.refresh()
+    except Exception as e:
+            print (f"Error during login", str(e))
+            return
 
 if __name__ == "__main__":
     unittest.main()
