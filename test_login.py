@@ -9,19 +9,9 @@ import unittest
 import time
 import pytest
 
-
-@pytest.fixture
-def instagram_driver():
-    driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
-    driver.maximize_window()
-    yield driver
-    time.sleep(5)
-    driver.quit()
-
 @pytest.mark.regression
 def test_search (instagram_driver):
     driver = instagram_driver
-    driver.get('https://instagram.com/')
     username = "automation.edward"
     password = "User1234"
     wait = WebDriverWait(driver,10)
